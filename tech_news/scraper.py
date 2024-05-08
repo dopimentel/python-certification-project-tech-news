@@ -42,9 +42,56 @@ def scrape_next_page_link(html_content):
 
 
 # Requisito 4
+
+
+def extract_news_url(url):
+    if "facebook.com/sharer.php?u=" in url:
+        url_split = url.split("u=")
+
+        if len(url_split) > 1:
+
+            url = url_split[1]
+            return url
+    return url
+
+
+def extract_number_from_string(string):
+    number = "".join(filter(str.isdigit, string))
+    return int(number)
+
+
 def scrape_news(html_content):
-    """Seu código deve vir aqui"""
-    raise NotImplementedError
+    soup = BeautifulSoup(html_content, "html.parser")
+    news = dict()
+    sharer_link = soup.find("a", {"class": "pk-share-buttons-link"}).get(
+        "href"
+    )
+    news["url"] = extract_news_url(sharer_link)
+    news["title"] = soup.find("h1", {"class": "entry-title"}).string.strip()
+    news["timestamp"] = soup.find("li", {"class": "meta-date"}).string
+    news["writer"] = soup.find("span", {"class": "fn"}).text.strip()
+
+    reading_time = soup.find("li", {"class": "meta-reading-time"}).text
+    news["reading_time"] = extract_number_from_string(reading_time)
+
+    news["summary"] = (
+        soup.find("div", {"class": "entry-content"})
+        .find("p")
+        .get_text()
+        .strip()
+    )
+    news["category"] = soup.find("span", {"class": "label"}).string
+
+    return news
+
+
+# print(
+#     scrape_news(
+#         fetch(
+#             "https://blog.betrybe.com/tecnologia/jogos-iniciantes-aprender-programar/"
+#         )
+#     )
+# )
 
 
 # Requisito 5
