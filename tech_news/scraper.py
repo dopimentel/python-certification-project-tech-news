@@ -3,8 +3,6 @@ import requests
 from time import sleep
 from tech_news.database import create_news
 
-create_news([{"url": "https://www.google.com"}])
-
 
 # Requisito 1
 def fetch(url):
