@@ -1,3 +1,4 @@
+from bs4 import BeautifulSoup
 import requests
 from time import sleep
 
@@ -12,7 +13,7 @@ def fetch(url):
     }
     try:
         sleep(1)
-        response = requests.get(url, headers=headers, timeout=3)
+        response = requests.get(url, headers=headers, timeout=5)
         response.raise_for_status()
     except requests.RequestException as e:
         print("Erro ao fazer requisição: ", e)
@@ -22,8 +23,17 @@ def fetch(url):
 
 # Requisito 2
 def scrape_updates(html_content):
-    """Seu código deve vir aqui"""
-    raise NotImplementedError
+    soup = BeautifulSoup(html_content, "html.parser")
+    # print(soup.prettify())
+    a = soup.find_all("a", {"class": "cs-overlay-link"})
+    if a == []:
+        return []
+    links = [anchor.get("href") for anchor in a]
+    return links
+    # print(links)
+
+
+# scrape_updates(fetch("https://blog.betrybe.com/"))
 
 
 # Requisito 3
