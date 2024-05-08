@@ -21,7 +21,11 @@ def mock_find_news_negative_value():
     yield mock
 
 
-def test_reading_plan_group_news(mock_find_news_valid_values, mock_find_news_invalid_values, mock_find_news_negative_value):
+def test_reading_plan_group_news(
+    mock_find_news_valid_values,
+    mock_find_news_invalid_values,
+    mock_find_news_negative_value,
+):
     test_reading_plan_group_news_valid_values(mock_find_news_valid_values)
     test_reading_plan_group_news_invalid_values(mock_find_news_invalid_values)
     test_reading_plan_group_news_negative_value(mock_find_news_negative_value)
@@ -44,7 +48,9 @@ def test_reading_plan_group_news_valid_values(mock_find_news_valid_values):
     mock_find_news_valid_values.assert_called_once()
 
 
-def test_reading_plan_group_news_invalid_values(mock_find_news_invalid_values):
+def test_reading_plan_group_news_invalid_values(
+    mock_find_news_invalid_values,
+):
     invalid_values = [-5, 0]
     for value in invalid_values:
         with pytest.raises(ValueError):
@@ -52,7 +58,9 @@ def test_reading_plan_group_news_invalid_values(mock_find_news_invalid_values):
     mock_find_news_invalid_values.assert_not_called()
 
 
-def test_reading_plan_group_news_negative_value(mock_find_news_negative_value):
+def test_reading_plan_group_news_negative_value(
+    mock_find_news_negative_value,
+):
     with pytest.raises(ValueError):
         ReadingPlanService.group_news_for_available_time(-5)
     mock_find_news_negative_value.assert_not_called()
