@@ -24,22 +24,21 @@ def fetch(url):
 # Requisito 2
 def scrape_updates(html_content):
     soup = BeautifulSoup(html_content, "html.parser")
-    # print(soup.prettify())
     a = soup.find_all("a", {"class": "cs-overlay-link"})
     if a == []:
         return []
     links = [anchor.get("href") for anchor in a]
     return links
-    # print(links)
-
-
-# scrape_updates(fetch("https://blog.betrybe.com/"))
 
 
 # Requisito 3
 def scrape_next_page_link(html_content):
-    """Seu código deve vir aqui"""
-    raise NotImplementedError
+    soup = BeautifulSoup(html_content, "html.parser")
+    next_page = soup.find("a", {"class": "next"})
+    if next_page is None:
+        return None
+    next_page = next_page.get("href")
+    return next_page
 
 
 # Requisito 4
